@@ -359,6 +359,8 @@ def _agent_google(question, par_nom, system, max_tours, temperature):
         contents.append(r.candidates[0].content)
         reponses = []
         for fc in r.function_calls:
+            if len(appels) >= 6:  # <-- Sécurité anti-abus de coût
+                break
             appel = _executer_outil(par_nom, fc.name, dict(fc.args or {}))
             appels.append(appel)
             reponses.append(types.Part.from_function_response(name=fc.name, response=_pour_modele(appel)))

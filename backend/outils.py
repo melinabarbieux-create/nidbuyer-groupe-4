@@ -22,7 +22,7 @@ ANNONCES_EXEMPLE = Path(__file__).resolve().parent.parent / "data" / "annonces_e
 
 
 def _annonces() -> list[dict]:
-    return json.loads(ANNONCES_EXEMPLE.read_text(encoding="utf-8"))
+    return json.loads(ANNONCES_EXEMPLE.read_text(encoding="utf-8-sig"))
 
 
 def chercher_biens(budget_max: float, quartier: str | None = None, surface_min: float | None = None,
@@ -44,7 +44,7 @@ def chercher_biens(budget_max: float, quartier: str | None = None, surface_min: 
     if surface_min:
         biens = [b for b in biens if b["surface"] >= surface_min]
     if mots_cles:
-        mots = [m.lower() for m in mots_cles.split() if len(m) > 2]
+        mots = [m.lower() for m in mots_cles.split() if len(m) >= 2]
         biens = [b for b in biens if any(m in b["description"].lower() for m in mots)]
     return sorted(biens, key=lambda b: b["prix"])[:5]
 
